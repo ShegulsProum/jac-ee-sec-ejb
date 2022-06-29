@@ -1,0 +1,30 @@
+# Batch script to remove the servlet-security-quickstart domain from the server configuration file
+
+# Start batching commands
+batch
+
+# Remove the application security domain mapping from the EJB3 subsystem
+/subsystem=ejb3/application-security-domain=other:remove
+
+# Restore the sasl-authentication-factory to use legacy application security domain
+/subsystem=elytron/sasl-authentication-factory=application-sasl-authentication:write-attribute(name=security-domain, value=ApplicationDomain)
+
+
+
+# Remove Undertow's application security domain
+/subsystem=undertow/application-security-domain=GSEESecurityDomain:remove()
+
+# Remove the HTTP Authentication Factory
+/subsystem=elytron/http-authentication-factory=gsee-http-auth:remove()
+
+# Remove the GSEESecurityDomain security domain
+/subsystem=elytron/security-domain=GSEESecurityDomain:remove()
+
+# Remove the JDBC security realm creation
+/subsystem=elytron/jdbc-realm=nsk-ogd:remove()
+
+# Run the batch commands
+run-batch
+
+# Reload the server configuration
+reload
