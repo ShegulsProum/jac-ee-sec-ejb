@@ -34,7 +34,7 @@ import java.util.concurrent.Callable;
  */
 public class RemoteClient {
     public static void main(String[] args) throws Exception {
-        AuthenticationConfiguration common = AuthenticationConfiguration.empty().useRealm("GSEERealm")
+        AuthenticationConfiguration common = AuthenticationConfiguration.empty()
                 .setSaslMechanismSelector(SaslMechanismSelector.NONE.addMechanism("BASIC"));
         AuthenticationConfiguration ejbConfig = common.useName("e.zhi").usePassword("5077de6c68bf5178379c9b4c2a426991");
         AuthenticationContext context = AuthenticationContext.empty().with(MatchRule.ALL, ejbConfig);
@@ -50,7 +50,7 @@ public class RemoteClient {
 
         final Context context = new InitialContext(properties);
 
-        SecuredEJB reference = (SecuredEJB) context.lookup("ejb:/jac-ee-sec-ejb-1.0-SNAPSHOT/GSSEESecuredEJB!com.sheg.jaceesecejb.SecuredEJB");
+        SecuredEJB reference = (SecuredEJB) context.lookup("ejb:/jac-ee-sec-ejb-1.0-SNAPSHOT/GSSEESecuredEJB!"+SecuredEJB.class.getName());
 
         StringBuilder builder = new StringBuilder();
         builder.append("\n\n* * * * * * * * * * * * * * * * * * * * * * * * * * * * * *\n\n");
